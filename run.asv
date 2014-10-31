@@ -1,0 +1,20 @@
+function output = run(inds,gens)
+state = robot_state();
+gen = pop_generation();
+evolution = train_pop();
+
+constants();
+global robot; robot=load('robot.txt');
+global leg_height_equiv_dist; 
+leg_height_equiv_dist = state.get_height_equiv_dist();
+global ind_per_pop; ind_per_pop = inds;
+global prob_of_mutate; prob_of_mutate = 300;
+global generations; generations = gens;
+global start; start = 0;
+global temp; temp = 0;
+
+
+pop = gen.make_random_pop(ind_per_pop,start_length,loop_length);
+%pop = {{3337 29680 [0 0] {[6 3741] [31 399] [13 2240] [47 3952] [7 3975] [47 1988] [40 581] [21 3750] [39 3930] [32 146] [42 3825] [33 3103]}} {3043 12852 [0 0] {[32 701] [35 130] [13 189] [4 3372] [34 1298] [47 141] [21 1562] [38 3257] [9 2006] [22 2647] [35 3091] [13 2784]}} {2683 5328 [0 0] {[5 2041] [47 1394] [29 916] [37 1044] [25 2863] [44 3929] [27 567] [7 1054] [42 1041] [40 997] [46 1433] [9 1028]}}};
+
+output = evolution.train(pop,generations);

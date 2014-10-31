@@ -1,0 +1,6 @@
+function printpop(pop)
+fid = fopen('pop.txt','wt');
+for i=1:length(pop)
+    fprintf(fid,'%s\n',cell2str(pop{i}));
+end
+fclose(fid);

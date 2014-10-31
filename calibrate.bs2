@@ -1,0 +1,41 @@
+' *Stamp Configurations!*
+' {$PBASIC 2.5}
+' {$STAMP BS2pe}
+' {$PORT COM3}
+
+i VAR Byte
+j VAR Byte
+a VAR Word(4)
+r VAR Byte(4)
+
+r(0) = 15
+r(1) = 14
+r(2) = 15
+r(3) = 14
+
+DIRS = $FFFF
+OUTS = 0
+
+FOR j = 0 TO 10
+
+  FOR i = 0 TO 50
+    OUTS = $FFFF
+    PULSOUT 12, 300
+    OUTS = %0000010101101010
+    PULSOUT 12, 400
+    OUTS = 0
+    PAUSE 20
+  NEXT
+
+   FOR i = 0 TO 50
+    OUTS = $FFFF
+    PULSOUT 12, 300
+    OUTS = %0000110101101010
+    PULSOUT 12, 400
+    OUTS = 0
+    PAUSE 20
+  NEXT
+
+NEXT
+
+END

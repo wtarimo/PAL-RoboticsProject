@@ -1,0 +1,114 @@
+' *Stamp Configurations!*
+' {$PBASIC 2.5}
+' {$STAMP BS2pe}
+' {$PORT COM3}
+
+'Variables!
+i VAR Nib
+a VAR Word(6)
+r VAR Byte
+
+'Loop Activations!
+a(0) = 910 ^ 1386
+a(1) = 782 ^ 1386
+a(2) = 142 ^ 1386
+a(3) = 14 ^ 1386
+a(4) = 3185 ^ 1386
+a(5) = 49 ^ 1386
+
+'Loop Repetitions!
+PUT 0, 6
+PUT 1, 3
+PUT 2, 3
+PUT 3, 4
+PUT 4, 9
+PUT 5, 7
+
+PUT 12, 0
+
+'Directions!
+DIRS = $FFFF
+OUTS = 0
+
+'Start Section!: Total Activations 0
+'Start Stance!
+FOR r = 0 TO 20
+  OUTS = $FFFF
+  PULSOUT 12, 300
+  OUTS = %0000010101101010
+  PULSOUT 12, 400
+  OUTS = 0
+  PAUSE 20
+NEXT
+
+FOR r = 0 TO 20
+  OUTS = $FFFF
+  PULSOUT 12, 300
+  OUTS = %0000100100101010
+  PULSOUT 12, 400
+  OUTS = 0
+  PAUSE 20
+NEXT
+
+FOR r = 0 TO 20
+  OUTS = $FFFF
+  PULSOUT 12, 300
+  OUTS = %0000010101101010
+  PULSOUT 12, 400
+  OUTS = 0
+  PAUSE 20
+NEXT
+
+FOR r = 0 TO 20
+  OUTS = $FFFF
+  PULSOUT 12, 300
+  OUTS = %0000011011101010
+  PULSOUT 12, 400
+  OUTS = 0
+  PAUSE 20
+NEXT
+
+FOR r   = 0 TO 20
+  OUTS = $FFFF
+  PULSOUT 12, 300
+  OUTS = %0000010101101010
+  PULSOUT 12, 400
+  OUTS = 0
+  PAUSE 20
+NEXT
+
+'Loop Section!: Total Activations 22
+'Activations Remaining 400
+
+'Loop Section!
+
+GET 12,r
+DO WHILE r < 18
+  r = r + 1
+  PUT 12, r
+  FOR i = 0 TO 5
+    GET i, r
+    DO WHILE r > 0
+      OUTS = $FFFF
+      PULSOUT 12, 300
+      OUTS = a(i)
+      PULSOUT 12, 400
+      OUTS = 0
+      PAUSE 20
+      r = r - 1
+    LOOP
+  NEXT
+  GET 12, r
+LOOP
+
+'Remaining Loop Genes!: Total Activations 4
+FOR r = 1 TO 4
+  OUTS = $FFFF
+  PULSOUT 12, 300
+  OUTS = a(0)
+  PULSOUT 12, 400
+  OUTS = 0
+  PAUSE 20
+NEXT
+
+END

@@ -1,0 +1,138 @@
+function gate = create_bs2()
+gate.new_gate = @new_gate;
+
+function new_gate(ind)
+gen = pop_generation();
+global num_moves;
+all_down_forward = 3276;
+
+start = gen.get_start(ind);
+loop = gen.get_loop(ind);
+loop_moves = 0;
+for i = length(loop):-1:1
+    if loop{i}(1) == 0
+        loop = [loop(1:i-1) loop(i+1:end)];
+    else
+        loop_moves = loop_moves + loop{i}(1);
+    end
+end
+
+%settings
+fid = fopen('new_gate.bs2','wt');
+fprintf(fid,'%s\n','''Gait Settings!');
+fprintf(fid,'%s\n',''' {$PBASIC 2.5}');
+fprintf(fid,'%s\n',''' {$STAMP BS2}');
+fprintf(fid,'%s\n',''' {$PORT COM8}');
+fprintf(fid,'%s\n','');
+
+%Variables
+fprintf(fid,'%s\n','''Variables!');
+fprintf(fid,'%s\n','i VAR Byte');
+fprintf(fid,'%s\n','j VAR Byte');
+fprintf(fid,'%s\n','a VAR Word(4)');
+fprintf(fid,'%s\n','r VAR Byte(4)');
+fprintf(fid,'%s\n','');
+
+%Loop Activations
+fprintf(fid,'%s\n','''Loop Activations!');
+for i=1:length(loop)
+    fprintf(fid,'%s%i%s%i%s%i\n','a(',i-1,') = ',loop{i}(2),' ^ ',all_down_forward);
+end
+fprintf(fid,'%s\n','');
+
+%Loop repetitions
+fprintf(fid,'%s\n','''Loop Repetitions!');
+for i=1:length(loop)
+    fprintf(fid,'%s%i%s%i\n','r(',i-1,') = ',loop{i}(1));
+end
+fprintf(fid,'%s\n','');
+
+%Set directions
+fprintf(fid,'%s\n','''Directions!');
+fprintf(fid,'%s\n','DIRS = $FFFF');
+fprintf(fid,'%s\n','OUTS = 0');
+fprintf(fid,'%s\n','');
+
+%Start stance
+fprintf(fid,'%s\n','''Start Stance!');
+fprintf(fid,'%s\n','FOR i = 0 TO 50');
+fprintf(fid,'%s\n','  OUTS = $FFFF');
+fprintf(fid,'%s\n','  PULSOUT 12, 500');
+fprintf(fid,'%s\n','  OUTS = 3276');
+fprintf(fid,'%s\n','  PULSOUT 12, 100');
+fprintf(fid,'%s\n','  OUTS = 0');
+fprintf(fid,'%s\n','  PAUSE 20');
+fprintf(fid,'%s\n','NEXT');
+fprintf(fid,'%s\n','');
+
+
+%Start section execution
+fprintf(fid,'%s%i\n','''Start Section!: Total Activations ',start(1));
+fprintf(fid,'%s\n','');
+if start(1) ~= 0
+    fprintf(fid,'%s\n','''Start Section!');
+    fprintf(fid,'%s%i\n','FOR i = 0 TO ',start(1)-1);
+    fprintf(fid,'%s\n','  OUTS = $FFFF');
+    fprintf(fid,'%s\n','  PULSOUT 12, 500');
+    fprintf(fid,'%s%i\n','  OUTS = ',start(2));
+    fprintf(fid,'%s\n','  PULSOUT 12, 100');
+    fprintf(fid,'%s\n','  OUTS = 0');
+    fprintf(fid,'%s\n','  PAUSE 20');
+    fprintf(fid,'%s\n','NEXT');
+    fprintf(fid,'%s\n','');
+end
+
+
+%Loop section execution
+moves = num_moves - start(1);
+fprintf(fid,'%s%i\n','''Loop Section!: Total Activations ',loop_moves);
+fprintf(fid,'%s%i\n','''Activations Remaining ',moves);
+fprintf(fid,'%s\n','');
+multiple = floor(moves/loop_moves);
+remaining = mod(moves,loop_moves);
+
+fprintf(fid,'%s\n','''Loop Section!');
+if multiple > 0
+    fprintf(fid,'%s%i\n','FOR l = 0 TO ',multiple-1);
+    fprintf(fid,'%s%i\n','  FOR i = 0 TO ',length(loop)-1);
+    fprintf(fid,'%s\n','    FOR j = 1 TO r(i)');
+    fprintf(fid,'%s\n','      OUTS = $FFFF');
+    fprintf(fid,'%s\n','      PULSOUT 12, 500');
+    fprintf(fid,'%s\n','      OUTS = a(i)');
+    fprintf(fid,'%s\n','      PULSOUT 12, 100');
+    fprintf(fid,'%s\n','      OUTS = 0');
+    fprintf(fid,'%s\n','      PAUSE 20');
+    fprintf(fid,'%s\n','    NEXT');
+    fprintf(fid,'%s\n','  NEXT');
+    fprintf(fid,'%s\n','NEXT');
+    fprintf(fid,'%s\n','');
+end
+
+
+%Print remaining loop genes
+fprintf(fid,'%s%i\n','''Remaining Loop Genes!: Total Activations ',remaining');
+i = 0;
+while remaining > 0
+    if remaining - loop{i+1}(1) >= 0
+        fprintf(fid,'%s%i\n','FOR i = 1 TO ',loop{i+1}(1));
+        remaining = remaining - loop{i+1}(1);
+    else
+        fprintf(fid,'%s%i\n','FOR i = 1 TO ',remaining);
+        remaining = 0;
+    end
+    fprintf(fid,'%s\n','  OUTS = $FFFF');
+    fprintf(fid,'%s\n','  PULSOUT 12, 500');
+    fprintf(fid,'%s%i%s\n','  OUTS = a(',i,')');
+    fprintf(fid,'%s\n','  PULSOUT 12, 100');
+    fprintf(fid,'%s\n','  OUTS = 0');
+    fprintf(fid,'%s\n','  PAUSE 20');
+    fprintf(fid,'%s\n','NEXT');
+    fprintf(fid,'%s\n','');
+    i=i+1;
+end
+fprintf(fid,'%s\n','END');
+fclose(fid);
+
+function new_reverse(angle)
+
+

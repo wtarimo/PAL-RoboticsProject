@@ -1,0 +1,83 @@
+' {$STAMP BS2pe}
+' {$PBASIC 2.5}
+' {$PORT COM3}
+
+i VAR Byte
+l VAR Byte
+j VAR Byte
+a VAR Word(4)
+r VAR Byte(4)
+
+a(0) = 910 ^ 1386
+a(1) = 14 ^ 1386
+a(2) = 3185 ^ 1386
+a(3) = 49 ^ 1386
+
+r(0) = 6
+r(1) = 5
+r(2) = 6
+r(3) = 5
+
+DIRS = $FFFF
+OUTS = 0
+
+'Start Stance!
+FOR i = 0 TO 20
+  OUTS = $FFFF
+  PULSOUT 12, 300
+  OUTS = %0000010101101010
+  PULSOUT 12, 400
+  OUTS = 0
+  PAUSE 20
+NEXT
+
+FOR i = 0 TO 20
+  OUTS = $FFFF
+  PULSOUT 12, 300
+  OUTS = %0000100100101010
+  PULSOUT 12, 400
+  OUTS = 0
+  PAUSE 20
+NEXT
+
+FOR i = 0 TO 20
+  OUTS = $FFFF
+  PULSOUT 12, 300
+  OUTS = %0000010101101010
+  PULSOUT 12, 400
+  OUTS = 0
+  PAUSE 20
+NEXT
+
+FOR i = 0 TO 20
+  OUTS = $FFFF
+  PULSOUT 12, 300
+  OUTS = %0000011011101010
+  PULSOUT 12, 400
+  OUTS = 0
+  PAUSE 20
+NEXT
+
+FOR i = 0 TO 20
+  OUTS = $FFFF
+  PULSOUT 12, 300
+  OUTS = %0000010101101010
+  PULSOUT 12, 400
+  OUTS = 0
+  PAUSE 20
+NEXT
+
+FOR l = 1 TO 2
+  FOR i = 0 TO 3
+    FOR j = 1 TO r(i)
+      OUTS = $FFFF
+      PULSOUT 12, 300
+      OUTS = a(i)
+      PULSOUT 12, 400
+      OUTS = 0
+      PAUSE 20
+    NEXT
+  NEXT
+NEXT
+
+END

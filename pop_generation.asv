@@ -1,0 +1,90 @@
+function pop = pop_generation()
+pop.make_random_pop = @make_random_pop;
+pop.make_random_
+pop.get_lengths = @get_lengths;
+pop.get_coordinators = @get_coordinators;
+pop.get_activations = @get_activations;
+pop.get_start = @get_start;
+pop.get_loop = @get_loop;
+pop.get_moves = @get_moves;
+
+function random_pop = make_random_pop(ind_count,start_size,loop_size)
+if ind_count == 0
+    random_pop = {};
+else
+    coordinhib = {floor(rand*4096) floor(rand*32768) [0 0]};
+    loopsection = make_section(loop_size);
+    ind = [coordinhib loopsection];
+    random_pop = [{ind} make_random_pop(ind_count-1,start_size,loop_size)];
+end
+
+
+function output = make_section(section_size)
+section{1,section_size}=[];
+for i=1:section_size
+    section{i} = [floor(50*rand) floor(4096*rand)];
+end
+output = section;
+
+function output = make_random_gene()
+output = [floor(rand*50) floor(rand*4096)];
+
+function output = get_moves(gene)
+output = gene(1);
+
+function output = get_activations(gene)
+output = gene(2);
+
+function output = get_coordinators(ind)
+output = ind{1};
+
+function output = get_inhibitors(ind)
+output = ind{2};
+
+function output = get_start(ind)
+output = ind{3};
+
+function output = get_loop(ind)
+output = ind(4:15);
+
+function output = get_ind(pop,ind_num)
+global ind_per_pop;
+if ind_num >= ind_per_pop
+    error('Individual index exceeds population size in get_ind(,)');
+else
+    output = pop{ind_num};
+end
+
+function set_ind(pop,ind_num,new_ind)
+global ind_per_pop;
+if ind_num >= ind_per_pop
+    error('Individual index exceeds population size in set_ind(,)');
+else
+    pop{ind_num}=new_ind;
+end
+
+function output = get_gene_per_ind(ind)
+output = length(ind);
+
+function output = get_total_gene(pop)
+if isempty(pop)
+    output = 0;
+else
+    output = get_gene_per_ind(pop{1}) + get_total_gene(pop(2:end));
+end
+
+function output = get_lengths(pop)
+if isempty(pop)
+    output = [];
+else
+    output = [length(pop{1}) get_lengths(pop(2:end))];
+end
+
+function output = set_moves(gene,num)
+output = [num gene(2)];
+
+function output = dec_moves(gene)
+output = [gene(1)-1 gene(2)];
+
+function output = inc_moves(gene)
+output = [gene(1)+1 gene(2)];

@@ -1,0 +1,108 @@
+' *Stamp Configurations!*
+' {$PBASIC 2.5}
+' {$STAMP BS2pe}
+' {$PORT COM3}
+
+'Variables!
+i VAR Nib
+a VAR Word(12)
+r VAR Byte
+
+'Loop Activations!
+a(0) = 1465 ^ 1386
+a(1) = 1577 ^ 1386
+a(2) = 447 ^ 1386
+a(3) = 2691 ^ 1386
+a(4) = 3384 ^ 1386
+a(5) = 2858 ^ 1386
+a(6) = 3919 ^ 1386
+a(7) = 2771 ^ 1386
+a(8) = 3697 ^ 1386
+a(9) = 631 ^ 1386
+a(10) = 2328 ^ 1386
+a(11) = 1642 ^ 1386
+
+'Loop Repetitions!
+PUT 0, 5
+PUT 1, 21
+PUT 2, 11
+PUT 3, 49
+PUT 4, 2
+PUT 5, 42
+PUT 6, 39
+PUT 7, 24
+PUT 8, 13
+PUT 9, 44
+PUT 10, 32
+PUT 11, 33
+
+PUT 12, 0
+
+'Directions!
+DIRS = $FFFF
+OUTS = 0
+
+'Start Section!: Total Activations 0
+
+'Loop Section!: Total Activations 315
+'Activations Remaining 400
+
+'Loop Section!
+
+GET 12,r
+DO WHILE r < 1
+  r = r + 1
+  PUT 12, r
+  FOR i = 0 TO 11
+    GET i, r
+    DO WHILE r > 0
+      OUTS = $FFFF
+      PULSOUT 12, 300
+      OUTS = a(i)
+      PULSOUT 12, 400
+      OUTS = 0
+      PAUSE 20
+      r = r - 1
+    LOOP
+  NEXT
+  GET 12, r
+LOOP
+
+'Remaining Loop Genes!: Total Activations 85
+FOR r = 1 TO 5
+  OUTS = $FFFF
+  PULSOUT 12, 300
+  OUTS = a(0)
+  PULSOUT 12, 400
+  OUTS = 0
+  PAUSE 20
+NEXT
+
+FOR r = 1 TO 21
+  OUTS = $FFFF
+  PULSOUT 12, 300
+  OUTS = a(1)
+  PULSOUT 12, 400
+  OUTS = 0
+  PAUSE 20
+NEXT
+
+FOR r = 1 TO 11
+  OUTS = $FFFF
+  PULSOUT 12, 300
+  OUTS = a(2)
+  PULSOUT 12, 400
+  OUTS = 0
+  PAUSE 20
+NEXT
+
+FOR r = 1 TO 48
+  OUTS = $FFFF
+  PULSOUT 12, 300
+  OUTS = a(3)
+  PULSOUT 12, 400
+  OUTS = 0
+  PAUSE 20
+NEXT
+
+END
